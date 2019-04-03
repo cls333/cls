@@ -22,18 +22,14 @@ import java.util.regex.Pattern;
 
 public class CreateTable {
     public static void main(String[] args) throws Exception{
-        String filePath = "/Users/caolisha/Desktop/变更通知文档/20180919.txt";
-
+        String filePath = "/Users/caolisha/Desktop/变更通知文档/20181031.txt";
         String buffer = readWord(filePath);
-        buffer.length();
 
-//        if(buffer.contains("1.新增下发表")){
-//            System.out.println(buffer);
-//        }
         if(buffer.contains("2.")){
             String[] split = buffer.split("2.");
             String creatContent = split[0];    //新建表的文档内容
             String alterContent = split[1];    //修改表的文档内容
+
             //String alterSql = getAlterSql(alterContent);   //修改表结构的sql
             //System.out.println(alterSql);
             System.out.println(creatContent);
@@ -173,16 +169,14 @@ public class CreateTable {
      * @throws Exception
      */
     public static String getCreateSql(String creatContent) throws Exception {
-        //System.out.println(creatContent);
         StringBuilder sql = new StringBuilder();
-
         //创建表
         String[] content = creatContent.split("\\s+");
         for(String singleCon : content){
             Pattern p = Pattern.compile("[\u4e00-\u9fa5]");
             Matcher m = p.matcher(singleCon);
             if (singleCon.contains(".") && !m.find()) {    // && !singleCon.contains("1.新增下发表")
-                System.out.println(singleCon);
+                //System.out.println(singleCon);
                 String[] tableName = singleCon.split("\\.");   // id.name
                 List<ExcelEntity> sqlInfo = new ArrayList<ExcelEntity>();  //存放要创建SQL的Excel信息
                 List<ExcelEntity> excelInfo = getExcelInfo();     //获取所有excel信息
@@ -226,16 +220,8 @@ public class CreateTable {
 
 
 
-
-
             }
         }
- //       for(int i = 0;i<content.length;i++){
-   //         System.out.println(content[i]);
-//            if (singleCon.contains(".")) {    // && !singleCon.contains("1.新增下发表")
-//                String[] tableName = singleCon.split("\\.");   // id.name
-//            }
- //       }
 
         return sql.toString();
     }
